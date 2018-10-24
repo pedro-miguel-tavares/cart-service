@@ -7,6 +7,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.junit.Before;
 import static org.assertj.core.api.Assertions.extractProperty;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.mockito.Mock;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -19,9 +22,24 @@ public class CartServiceTest {
   */
   private CartService service;
 
+    @Mock
+    private CartRepository repository;
+
     @Before
     public void setUp() {
-        service = new CartService();
+        service = new CartService(repository);
+        given(repository.findByCustomer(eq("111"))).willReturn(
+                new CartItem[]{
+                        new CartItem(0, "111", "AAA", 10),
+                        new CartItem(0, "111", "BBB", 100)
+                });
+
+        given(repository.findByCustomer(eq("222"))).willReturn(
+                new CartItem[]{
+                        new CartItem(0, "222", "AAA", 10)
+                });
+
+        given(repository.findByCustomer(eq("333"))).willReturn(null);
     }
 
     @Test

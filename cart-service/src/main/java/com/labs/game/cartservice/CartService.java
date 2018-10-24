@@ -6,6 +6,17 @@ import org.springframework.stereotype.Service;
 public class CartService {
 
     public CartItem[] findByCustomer(String customer) {
-        return null;
+        final CartItem[] cartItems = repository.findByCustomer(customer);
+        if (cartItems == null)
+            return new CartItem[0];
+        else
+            return cartItems;
     }
+    private CartRepository repository;
+
+    public CartService(CartRepository repository){
+        this.repository = repository;
+    }
+
+
 }
